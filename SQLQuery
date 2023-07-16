@@ -103,3 +103,18 @@ LEFT JOIN case_Reports  ON sworn_employees.employee_id = case_reports.employee_i
 SELECT sworn_employees.last_name as officer, speciality.speciality_skill
 FROM sworn_employees
 RIGHT JOIN speciality on sworn_employees.speciality_id = speciality.speciality_id
+
+
+CREATE VIEW officer as 
+  	SELECT sworn_employees.employee_id, Sworn_Employees.Last_Name as officer, stations.station_name
+	FROM Sworn_employees
+	JOIN stations on sworn_employees.patrol_station_id = stations.patrol_station_id
+
+CREATE OR REPLACE VIEW Patrol_and_Detective_Salary AS
+SELECT sworn_employees.employee_id, 
+       CONCAT(sworn_employees.first_name, ' ', sworn_employees.last_name) AS officer,
+       rank.rank_title, 
+       rank.salary
+FROM sworn_employees
+JOIN rank ON sworn_employees.rank_id = rank.rank_id
+WHERE rank.rank_title IN ('Police Officer', 'Detective')
