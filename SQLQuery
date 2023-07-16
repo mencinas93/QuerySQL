@@ -1,0 +1,105 @@
+
+Select plate_number as KY_plate_number,
+color, car_year,  make_and_model
+from vehicles
+where make_and_model = 'Ford Taurus'
+
+Select concat(first_name, ' ', last_name) 
+as full_name, state as KY_Address
+from offenders
+where state = 'KY'
+
+Select offense_name as offense_that_starts_with_A, 
+offense_category
+From offense
+where offense_name like 'A%' 
+and offense_category = 'Criminal'
+
+Select case_report_id as report_number, 
+time_occurred as time_and_date_of_crime,
+location_address as location_crime_occurred
+from case_reports
+where date_occurred = '2023-07-15'
+
+
+Select concat(sworn_employees.first_name, ' ',sworn_employees.last_name) as officer,
+ vehicles.Make_and_Model as officer_drives
+from sworn_employees, vehicles
+where sworn_employees.vehicle_ID = vehicles.vehicle_ID
+
+
+(Select court_ID as court_case from court
+ where court_name = 'District Court' )
+except
+(Select court_ID as court_case from court
+ where court_date = '2023-08-18')
+
+ (Select concat(first_name, ' ', last_name) as
+  Patrol_officer_who_work_West_or_Central_station from sworn_employees where rank_id = 1 and patrol_station_ID = 2)
+union
+(Select concat(first_name, ' ', last_name) from sworn_employees where rank_id = 1 and patrol_station_ID = 1)
+
+SELECT CONCAT(sworn_employees.first_name, ' ', sworn_employees.last_name) AS full_name, rank.rank_title
+FROM sworn_employees
+JOIN rank ON sworn_employees.Rank_ID = rank.Rank_ID
+WHERE rank.salary >= 100000
+GROUP BY sworn_employees.first_name, sworn_employees.last_name, rank.rank_title
+ORDER BY rank.rank_title
+
+SELECT rank.rank_title, sworn_employees.last_name, EXTRACT(YEAR FROM AGE(current_date, sworn_employees.date_of_birth)) AS age
+FROM sworn_employees
+JOIN rank ON sworn_employees.rank_id = rank.rank_id
+GROUP BY rank.rank_title, sworn_employees.last_name, sworn_employees.date_of_birth
+HAVING EXTRACT(YEAR FROM AGE(current_date, sworn_employees.date_of_birth)) >= 30
+ORDER BY rank.rank_title
+
+Select offenders.License_State as State_Born, count(case_reports.case_report_ID) as count
+from offenders
+Join case_reports on offenders.offender_ID = case_reports.offender_ID
+group by offenders.license_State
+
+SELECT AVG(EXTRACT(YEAR FROM AGE(current_date, sworn_employees.date_of_birth))) AS average_age
+FROM sworn_employees
+
+SELECT rank.rank_title, speciality.speciality_Skill
+FROM rank, speciality
+
+Select vehicles.plate_number, sworn_employees.last_name
+from vehicles, sworn_employees
+
+SELECT CONCAT(sworn_employees.first_name, ' ', sworn_employees.last_name) AS Officer_Name,
+rank.salary AS Higher_Than_Avg
+FROM sworn_employees
+JOIN rank ON sworn_employees.rank_ID = rank.rank_ID
+WHERE rank.salary > (SELECT AVG(rank.salary) FROM rank)
+
+SELECT s.Station_Name, e.first_name, e.last_name, r.salary
+FROM Stations s
+JOIN Sworn_Employees e ON s.Patrol_Station_ID = e.Patrol_Station_ID
+JOIN rank r ON e.rank_ID = r.Rank_ID
+WHERE (e.Patrol_Station_ID, r.salary) IN (
+    SELECT se.Patrol_Station_ID, MAX(r.salary)
+    FROM Sworn_Employees se
+    JOIN Rank r ON se.rank_ID = r.Rank_ID
+    GROUP BY se.Patrol_Station_ID
+)
+
+Select sworn_employees.First_name, Sworn_employees.Last_name, 
+rank.rank_title, stations.station_name, rank.salary
+From sworn_employees
+Join stations on sworn_employees.Patrol_station_ID = stations.patrol_station_id
+Join rank on rank.rank_ID= sworn_employees.rank_id
+
+Select concat(sworn_employees.first_name, ' ', sworn_employees.last_name) as full_name, 
+vehicles.make_and_model, vehicles.plate_number
+From sworn_employees
+Join vehicles on sworn_employees.vehicle_ID = vehicles.vehicle_ID
+
+
+SELECT sworn_employees.first_name, sworn_employees.last_name, case_reports.case_report_ID
+FROM sworn_Employees
+LEFT JOIN case_Reports  ON sworn_employees.employee_id = case_reports.employee_id
+
+SELECT sworn_employees.last_name as officer, speciality.speciality_skill
+FROM sworn_employees
+RIGHT JOIN speciality on sworn_employees.speciality_id = speciality.speciality_id
