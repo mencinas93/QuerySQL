@@ -118,3 +118,11 @@ SELECT sworn_employees.employee_id,
 FROM sworn_employees
 JOIN rank ON sworn_employees.rank_id = rank.rank_id
 WHERE rank.rank_title IN ('Police Officer', 'Detective')
+
+CREATE ROLE Supervisor;
+CREATE ROLE "55234";
+ALTER ROLE "55234" WITH PASSWORD '12345';
+CREATE ROLE "55221";
+ALTER ROLE "55221" WITH PASSWORD '23456';
+GRANT SELECT ON Patrol_and_Detective_Salary TO Supervisor;
+GRANT Supervisor TO "55234", "55221";
