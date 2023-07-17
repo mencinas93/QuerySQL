@@ -126,3 +126,13 @@ CREATE ROLE "55221";
 ALTER ROLE "55221" WITH PASSWORD '23456';
 GRANT SELECT ON Patrol_and_Detective_Salary TO Supervisor;
 GRANT Supervisor TO "55234", "55221";
+
+CREATE OR REPLACE FUNCTION count_employees() RETURNS INTEGER AS $$
+DECLARE
+  total_count INTEGER;
+BEGIN
+  SELECT COUNT(*) INTO total_count FROM sworn_employees;
+  RETURN total_count;
+END;
+$$ LANGUAGE plpgsql;
+
