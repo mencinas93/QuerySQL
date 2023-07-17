@@ -166,3 +166,31 @@ BEGIN
     WHERE rank_id = int_rank_id;
 END;
 $$;
+
+CREATE OR REPLACE FUNCTION timestamp_changes_function()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO updated_log (table_name, record_id, modified_at)
+    VALUES ('Case_Reports', NEW.Case_Report_ID, CURRENT_TIMESTAMP);
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE or replace TRIGGER timestamp_changes_trigger
+AFTER UPDATE ON Case_Reports
+FOR EACH ROW
+EXECUTE FUNCTION timestamp_changes_function();
+
+CREATE TABLE updated_log (
+    log_id serial PRIMARY KEY,
+    table_name varchar(50) NOT NULL,
+    record_id integer NOT NULL,
+    modified_at timestamp NOT NULL
+);
+
+Update Case_Reports
+SET location_address = '1234 Test Street'
+where case_Report_ID = 1
+
+SELECT * FROM updated_log WHERE table_name = 'Case_Reports';
