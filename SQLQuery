@@ -147,12 +147,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE PROCEDURE Insert_Station(Int_Patrol_Station_ID INT, Var_Station_Name VARCHAR)
+CREATE OR REPLACE PROCEDURE Insert_Station(Int_Patrol_Station_ID INT, Var_Station_Name VARCHAR, Char_Phone_Number CHAR, Var_Address VARCHAR, City VARCHAR)
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    INSERT INTO stations (Patrol_Station_ID, Station_Name)
-    VALUES (Int_Patrol_Station_ID, Var_Station_Name);
+    INSERT INTO stations (Patrol_Station_ID, Station_Name, phone, station_address, city)
+    VALUES (Int_Patrol_Station_ID, Var_Station_Name, Char_Phone_Number,Var_Address, City);
 END;
 $$;
+
 
