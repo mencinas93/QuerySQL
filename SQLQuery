@@ -136,3 +136,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION get_employees_rank(var_rank_title VARCHAR)
+RETURNS TABLE (employee_id INTEGER, first_name VARCHAR, last_name VARCHAR)
+AS $$
+BEGIN
+    RETURN QUERY SELECT sworn_employees.employee_id, sworn_employees.first_name, sworn_employees.last_name
+                 FROM sworn_employees
+				 JOIN Rank ON sworn_employees.rank_ID = Rank.Rank_ID
+                 WHERE Rank.rank_title = var_rank_title;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE PROCEDURE Insert_Station(Int_Patrol_Station_ID INT, Var_Station_Name VARCHAR)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    INSERT INTO stations (Patrol_Station_ID, Station_Name)
+    VALUES (Int_Patrol_Station_ID, Var_Station_Name);
+END;
+$$;
+
