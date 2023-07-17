@@ -157,3 +157,12 @@ END;
 $$;
 
 
+CREATE OR REPLACE PROCEDURE UpdateEmployeeSalary(int_Rank_ID INT, dec_new_salary DECIMAL)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE rank
+    SET salary = dec_new_salary
+    WHERE rank_id = int_rank_id;
+END;
+$$;
